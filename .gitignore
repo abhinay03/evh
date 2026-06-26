@@ -33,7 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# vercel
+# backend
+backend/node_modules/
+backend/prisma/dev.db
+backend/dist/
 .vercel
 
 # typescript
