@@ -3,15 +3,17 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLocale } from "@/context/locale-context";
+import { useTheme } from "@/context/theme-context";
 import { aiResponses } from "@/lib/mock-data";
 
-const examplePrompts = [
-  "Explain my bill",
-  "Can I switch to district heating?",
-  "Will I save money?",
-  "Heating seems high",
-  "Any incentives?",
-  "Should I install solar?",
+const examplePromptKeys = [
+  "ai.prompt.1",
+  "ai.prompt.2",
+  "ai.prompt.3",
+  "ai.prompt.4",
+  "ai.prompt.5",
+  "ai.prompt.6",
 ];
 
 interface Message {
@@ -19,18 +21,21 @@ interface Message {
   content: string;
 }
 
-const initialMessages: Message[] = [
-  {
-    role: "assistant",
-    content: "Hello Anna! I'm your EVH AI assistant. Ask me anything about your energy, bills, or how to save money.",
-  },
-];
-
 export function AiAssistantContent() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { t, locale } = useLocale();
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    if (!initialized) {
+      setMessages([{ role: "assistant", content: t("ai.portal.greeting") }]);
+      setInitialized(true);
+    }
+  }, [t, initialized]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -66,8 +71,8 @@ export function AiAssistantContent() {
       className="p-4 md:p-6 h-[calc(100vh-8rem)] flex flex-col"
     >
       <div>
-        <h1 className="text-2xl md:text-3xl font-display font-bold text-evh-dark">AI Assistant</h1>
-        <p className="text-evh-gray-500 text-sm mt-1">Ask anything about your energy.</p>
+        <h1 className="text-2xl md:text-3xl font-display font-bold text-evh-dark dark:text-white">{t("ai.portal.title")}</h1>
+        <p className="text-evh-gray-500 dark:text-slate-400 text-sm mt-1">{t("ai.portal.subtitle")}</p>
       </div>
 
       <Card className="flex-1 mt-6 flex flex-col overflow-hidden">
@@ -82,15 +87,17 @@ export function AiAssistantContent() {
                 className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}
               >
                 {msg.role === "assistant" && (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-evh-yellow to-amber-400 flex items-center justify-center text-white font-bold text-xs shrink-0">
-                    AI
-                  </div>
+                  <img
+                    src="/images/Thermo-Toni.png"
+                    alt="Thermo-Toni"
+                    className="w-8 h-8 rounded-full object-cover shrink-0"
+                  />
                 )}
                 <div
                   className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed ${
                     msg.role === "user"
                       ? "bg-evh-dark text-white rounded-br-lg"
-                      : "bg-evh-gray-50 text-evh-dark rounded-bl-lg"
+                      : "bg-evh-gray-50 dark:bg-slate-800 text-evh-dark dark:text-white rounded-bl-lg"
                   }`}
                 >
                   {msg.content}
@@ -108,14 +115,16 @@ export function AiAssistantContent() {
                 animate={{ opacity: 1 }}
                 className="flex gap-3"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-evh-yellow to-amber-400 flex items-center justify-center text-white font-bold text-xs shrink-0">
-                  AI
-                </div>
-                <div className="bg-evh-gray-50 rounded-2xl p-4 rounded-bl-lg">
+                <img
+                  src="/images/Thermo-Toni.png"
+                  alt="Thermo-Toni"
+                  className="w-8 h-8 rounded-full object-cover shrink-0"
+                />
+                <div className="bg-evh-gray-50 dark:bg-slate-800 rounded-2xl p-4 rounded-bl-lg">
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-evh-gray-300 rounded-full animate-pulse" />
-                    <div className="w-2 h-2 bg-evh-gray-300 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
-                    <div className="w-2 h-2 bg-evh-gray-300 rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
+                    <div className="w-2 h-2 bg-evh-gray-300 dark:bg-slate-600 rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-evh-gray-300 dark:bg-slate-600 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
+                    <div className="w-2 h-2 bg-evh-gray-300 dark:bg-slate-600 rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
                   </div>
                 </div>
               </motion.div>
@@ -125,13 +134,13 @@ export function AiAssistantContent() {
 
           {messages.length === 1 && (
             <div className="flex flex-wrap gap-2 mb-4">
-              {examplePrompts.map((prompt) => (
+              {examplePromptKeys.map((key) => (
                 <button
-                  key={prompt}
-                  onClick={() => sendMessage(prompt)}
-                  className="px-3 py-1.5 bg-evh-gray-50 hover:bg-evh-gray-100 text-xs font-medium text-evh-gray-600 rounded-xl border border-evh-gray-200 transition-colors"
+                  key={key}
+                  onClick={() => sendMessage(t(key))}
+                  className="px-3 py-1.5 bg-evh-gray-50 dark:bg-slate-800 hover:bg-evh-gray-100 dark:hover:bg-slate-700 text-xs font-medium text-evh-gray-600 dark:text-slate-300 rounded-xl border border-evh-gray-200 dark:border-slate-600 transition-colors"
                 >
-                  {prompt}
+                  {t(key)}
                 </button>
               ))}
             </div>
@@ -142,15 +151,15 @@ export function AiAssistantContent() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
-              placeholder="Ask a question..."
-              className="flex-1 px-4 py-3 rounded-xl border border-evh-gray-200 bg-white text-sm text-evh-dark placeholder:text-evh-gray-400 focus:outline-none focus:ring-2 focus:ring-evh-yellow/50 focus:border-evh-yellow transition-all"
+              placeholder={t("ai.portal.placeholder")}
+              className="flex-1 px-4 py-3 rounded-xl border border-evh-gray-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm text-evh-dark dark:text-white placeholder:text-evh-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-evh-primary/50 focus:border-evh-primary transition-all"
             />
             <button
               onClick={() => sendMessage(input)}
               disabled={!input.trim() || isLoading}
               className="px-5 py-3 bg-evh-dark text-white text-sm font-semibold rounded-xl hover:bg-evh-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-              Send
+              {t("ai.portal.send")}
             </button>
           </div>
         </CardContent>

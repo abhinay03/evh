@@ -1,41 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale } from "@/context/locale-context";
+import { useTheme } from "@/context/theme-context";
 
 const columns = [
   {
-    title: "Products",
+    titleKey: "footer.products",
     links: [
-      { label: "District Heating", href: "#district-heating" },
-      { label: "Electricity", href: "#electricity" },
-      { label: "Smart Meters", href: "#" },
-      { label: "Solar Solutions", href: "#" },
-      { label: "EV Charging", href: "#" },
+      { labelKey: "nav.district.heating", href: "#district-heating" },
+      { labelKey: "nav.electricity", href: "#electricity" },
+      { labelKey: "footer.smart.meters", href: "#" },
+      { labelKey: "footer.solar", href: "#" },
+      { labelKey: "footer.ev.charging", href: "#" },
     ],
   },
   {
-    title: "Company",
+    titleKey: "footer.company",
     links: [
-      { label: "About EVH", href: "#" },
-      { label: "Sustainability", href: "#sustainability" },
-      { label: "Community", href: "#community" },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" },
+      { labelKey: "footer.about", href: "#" },
+      { labelKey: "nav.sustainability", href: "#sustainability" },
+      { labelKey: "nav.community", href: "#community" },
+      { labelKey: "footer.careers", href: "#" },
+      { labelKey: "footer.press", href: "#" },
     ],
   },
   {
-    title: "Connect",
+    titleKey: "footer.connect",
     links: [
-      { label: "Customer Portal", href: "/portal/login" },
-      { label: "Contact", href: "#" },
-      { label: "Emergency", href: "#" },
-      { label: "FAQ", href: "#" },
-      { label: "Feedback", href: "#" },
+      { labelKey: "nav.customer.portal", href: "/portal/login" },
+      { labelKey: "footer.contact", href: "#" },
+      { labelKey: "footer.emergency", href: "#" },
+      { labelKey: "footer.faq", href: "#" },
+      { labelKey: "footer.feedback", href: "#" },
     ],
   },
 ];
 
 export function Footer() {
+  const { t, locale } = useLocale();
+  const { theme } = useTheme();
+
   return (
     <footer className="bg-evh-dark text-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
@@ -43,17 +48,17 @@ export function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-1.5 mb-4">
               <span className="text-2xl font-display font-bold text-white">EVH</span>
-              <span className="w-2 h-2 rounded-full bg-evh-yellow" />
+              <span className="w-2 h-2 rounded-full bg-evh-primary" />
             </Link>
-            <p className="text-evh-gray-400 text-sm leading-relaxed max-w-xs">
-              Your Energy. Your City. Your Future. Stadtwerke Halle — powered by Halle, for Halle.
+            <p className="text-evh-gray-400 dark:text-slate-400 text-sm leading-relaxed max-w-xs">
+              {t("footer.tagline")}
             </p>
             <div className="flex gap-3 mt-6">
               {["Twitter", "LinkedIn", "Instagram"].map((social) => (
                 <a
                   key={social}
                   href="#"
-                  className="w-9 h-9 rounded-xl bg-evh-gray-800 hover:bg-evh-gray-700 flex items-center justify-center text-xs text-evh-gray-400 hover:text-white transition-all duration-300"
+                  className="w-9 h-9 rounded-xl bg-evh-gray-800 hover:bg-evh-gray-700 flex items-center justify-center text-xs text-evh-gray-400 dark:text-slate-400 hover:text-white transition-all duration-300"
                   aria-label={social}
                 >
                   {social[0]}
@@ -63,18 +68,18 @@ export function Footer() {
           </div>
 
           {columns.map((col) => (
-            <div key={col.title}>
+            <div key={col.titleKey}>
               <h4 className="text-sm font-semibold text-evh-gray-300 mb-4 uppercase tracking-wider">
-                {col.title}
+                {t(col.titleKey)}
               </h4>
               <ul className="space-y-3">
                 {col.links.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.labelKey}>
                     <Link
                       href={link.href}
-                      className="text-sm text-evh-gray-500 hover:text-white transition-colors duration-200"
+                      className="text-sm text-evh-gray-500 dark:text-slate-400 hover:text-white transition-colors duration-200"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -84,15 +89,15 @@ export function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-evh-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-evh-gray-500">
-            &copy; {new Date().getFullYear()} Stadtwerke Halle GmbH. All rights reserved.
+          <p className="text-xs text-evh-gray-500 dark:text-slate-400">
+            {t("footer.copyright", { year: new Date().getFullYear() })}
           </p>
           <div className="flex gap-6">
             {["Privacy", "Imprint", "Terms"].map((item) => (
               <Link
                 key={item}
                 href="#"
-                className="text-xs text-evh-gray-500 hover:text-white transition-colors"
+                className="text-xs text-evh-gray-500 dark:text-slate-400 hover:text-white transition-colors"
               >
                 {item}
               </Link>

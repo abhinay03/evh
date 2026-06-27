@@ -67,7 +67,7 @@ export interface Neighbourhood {
 export const customers: Customer[] = [
   {
     id: "CUST-001",
-    name: "Anna Becker",
+    name: "Mariana",
     email: "demo@evh.de",
     password: "demo123",
     address: "Merseburger Str. 42, 06110 Halle",
@@ -329,7 +329,7 @@ export const aiResponses: Record<string, string> = {
 };
 
 export const profileSettings = {
-  name: "Anna Becker",
+  name: "Mariana",
   email: "demo@evh.de",
   address: "Merseburger Str. 42, 06110 Halle",
   apartment: true,

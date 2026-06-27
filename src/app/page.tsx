@@ -2,6 +2,7 @@
 
 import { Navigation } from "@/components/landing/navigation";
 import { Hero } from "@/components/landing/hero";
+import { HeatScanLanding } from "@/components/landing/heatscan-landing";
 import { Story } from "@/components/landing/story";
 import { InteractiveHalle } from "@/components/landing/interactive-halle";
 import { WhyEvh } from "@/components/landing/why-evh";
@@ -12,6 +13,7 @@ import { SustainabilitySection } from "@/components/landing/sustainability";
 import { CustomerStories } from "@/components/landing/customer-stories";
 import { AiAssistantPreview } from "@/components/landing/ai-assistant";
 import { MobileApp } from "@/components/landing/mobile-app";
+import { CtaSection } from "@/components/landing/cta";
 import { Footer } from "@/components/landing/footer";
 
 export default function LandingPage() {
@@ -19,6 +21,7 @@ export default function LandingPage() {
     <main className="min-h-screen">
       <Navigation />
       <Hero />
+      <HeatScanLanding />
       <Story />
       <InteractiveHalle />
       <WhyEvh />
@@ -29,6 +32,7 @@ export default function LandingPage() {
       <CustomerStories />
       <AiAssistantPreview />
       <MobileApp />
+      <CtaSection />
       <Footer />
     </main>
   );

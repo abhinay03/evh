@@ -20,8 +20,8 @@ interface ChartProps {
 export function Chart({
   data,
   height = 200,
-  color = "#FFD100",
-  secondaryColor = "#2563EB",
+  color = "#E40000",
+  secondaryColor = "#FF2A2A",
   showGrid = false,
   className = "",
 }: ChartProps) {
@@ -63,7 +63,7 @@ export function Chart({
 export function LineChart({
   data,
   height = 200,
-  color = "#FFD100",
+  color = "#C57214",
   className = "",
 }: {
   data: { label: string; value: number }[];

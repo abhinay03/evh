@@ -2,19 +2,22 @@
 
 import { motion } from "framer-motion";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
+import { useLocale } from "@/context/locale-context";
 
 export function AiAssistantPreview() {
+  const { t, locale } = useLocale();
+
   return (
-    <section className="py-32 bg-white overflow-hidden">
+    <section className="py-32 bg-white dark:bg-slate-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
-          <p className="text-evh-yellow font-medium text-sm tracking-widest uppercase mb-4">
-            AI Assistant
+          <p className="text-[#E53935] font-medium text-sm tracking-widest uppercase mb-4">
+            {t("ai.label")}
           </p>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-evh-dark leading-tight max-w-3xl">
-            Your intelligent
+          <h2 className="text-4xl md:text-6xl font-display font-bold text-[#16233A] dark:text-white leading-tight max-w-3xl">
+            {t("ai.title.line1")}
             <br />
-            <span className="text-evh-gray-400">energy companion.</span>
+            <span className="text-[#94A3B8] dark:text-slate-400">{t("ai.title.line2")}</span>
           </h2>
         </ScrollReveal>
 
@@ -26,15 +29,17 @@ export function AiAssistantPreview() {
             transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             className="w-full max-w-lg"
           >
-            <div className="glass rounded-3xl p-1 animate-float">
-              <div className="bg-white rounded-2xl p-6">
+            <div className="glass rounded-[1.75rem] p-1 animate-float">
+              <div className="bg-white dark:bg-slate-800 rounded-[1.25rem] p-6">
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-evh-yellow to-amber-400 flex items-center justify-center text-white font-bold text-sm">
-                    EVH
-                  </div>
+                  <img
+                    src="/images/Thermo-Toni.png"
+                    alt="Thermo-Toni"
+                    className="w-10 h-10 rounded-full object-cover shrink-0"
+                  />
                   <div>
-                    <p className="text-sm font-semibold text-evh-dark">EVH AI Assistant</p>
-                    <p className="text-xs text-evh-gray-400">Online</p>
+                    <p className="text-sm font-semibold text-[#16233A] dark:text-white">{t("ai.preview.title")}</p>
+                    <p className="text-xs text-[#94A3B8] dark:text-slate-400">{t("ai.preview.status")}</p>
                   </div>
                   <div className="ml-auto flex gap-1">
                     <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -43,20 +48,22 @@ export function AiAssistantPreview() {
 
                 <div className="space-y-4">
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-evh-yellow to-amber-400 flex items-center justify-center text-white font-bold text-xs shrink-0">
-                      AI
-                    </div>
-                    <div className="flex-1 p-4 rounded-2xl bg-evh-gray-50 text-sm text-evh-dark leading-relaxed">
-                      Hello Anna. Outside temperature drops to 2°C tonight. Would you like EVH to optimise your heating schedule for better efficiency?
+                    <img
+                      src="/images/Thermo-Toni.png"
+                      alt="Thermo-Toni"
+                      className="w-8 h-8 rounded-full object-cover shrink-0"
+                    />
+                    <div className="flex-1 p-4 rounded-[1.25rem] bg-[#F8FAFC] dark:bg-slate-700 text-sm text-[#16233A] dark:text-white leading-relaxed">
+                      {t("ai.preview.message")}
                     </div>
                   </div>
 
                   <div className="flex gap-3 justify-end">
-                    <button className="px-5 py-2.5 bg-evh-dark text-white text-sm font-semibold rounded-xl hover:bg-evh-gray-700 transition-all duration-300 active:scale-[0.97]">
-                      Yes, optimise
+                    <button className="px-5 py-2.5 bg-[#16233A] text-white text-sm font-semibold rounded-xl hover:bg-[#334155] transition-all duration-300 active:scale-[0.97]">
+                      {t("ai.preview.yes")}
                     </button>
-                    <button className="px-5 py-2.5 border border-evh-gray-200 text-evh-gray-600 text-sm font-medium rounded-xl hover:bg-evh-gray-50 transition-all duration-300 active:scale-[0.97]">
-                      Not now
+                    <button className="px-5 py-2.5 border border-[#E2E8F0] dark:border-slate-600 text-[#475569] dark:text-slate-300 text-sm font-medium rounded-xl hover:bg-[#F8FAFC] dark:hover:bg-slate-700 transition-all duration-300 active:scale-[0.97]">
+                      {t("ai.preview.no")}
                     </button>
                   </div>
                 </div>
@@ -66,8 +73,8 @@ export function AiAssistantPreview() {
         </div>
 
         <ScrollReveal delay={0.3} className="mt-8 text-center">
-          <p className="text-sm text-evh-gray-400 max-w-md mx-auto">
-            Available 24/7 in your Customer Portal. Ask about bills, heating, solar, and more.
+          <p className="text-sm text-[#94A3B8] dark:text-slate-400 max-w-md mx-auto">
+            {t("ai.preview.footer")}
           </p>
         </ScrollReveal>
       </div>

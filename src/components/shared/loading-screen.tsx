@@ -33,7 +33,7 @@ export function LoadingScreen() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + i * 0.15, duration: 0.4 }}
-                  className="text-3xl font-display font-bold text-evh-yellow"
+                  className="text-3xl font-display font-bold text-evh-primary"
                 >
                   {letter}
                 </motion.span>
@@ -44,7 +44,7 @@ export function LoadingScreen() {
                 initial={{ x: "-100%" }}
                 animate={{ x: "400%" }}
                 transition={{ duration: 1.2, ease: "easeInOut", repeat: Infinity }}
-                className="w-1/4 h-full bg-evh-yellow rounded-full"
+                className="w-1/4 h-full bg-evh-primary rounded-full"
               />
             </div>
             <motion.p

@@ -1,11 +1,16 @@
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-evh-yellow: #FFD100;
+@theme {
+  --color-evh-primary: #E40000;
+  --color-evh-primary-light: #FF2A2A;
+  --color-evh-primary-vivid: #E40000;
+  --color-evh-red: #E40000;
+  --color-evh-cream: #FCF4E7;
   --color-evh-dark: #1E293B;
   --color-evh-bg: #FAFAFA;
-  --color-evh-accent: #2563EB;
-  --color-evh-success: #22C55E;
+  --color-evh-accent: #E40000;
+  --color-evh-success: #16A34A;
   --color-evh-gray-50: #f8fafc;
   --color-evh-gray-100: #f1f5f9;
   --color-evh-gray-200: #e2e8f0;
@@ -25,19 +30,65 @@
     @apply border-evh-gray-200;
   }
 
+  .dark * {
+    @apply border-evh-gray-200;
+  }
+
   body {
     @apply bg-evh-bg text-evh-dark font-sans antialiased;
     scroll-behavior: smooth;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html[data-theme="dark"] body {
+    background-color: #0b1121;
+    color: #e8edf5;
+  }
+
+  .dark body {
+    background-color: #0b1121;
+    color: #e8edf5;
   }
 
   ::selection {
-    @apply bg-evh-yellow/30 text-evh-dark;
+    @apply bg-evh-primary/30 text-evh-dark;
   }
+
+  .dark body,
+  body.dark,
+  html[data-theme="dark"] body,
+  .dark * {
+    color-scheme: dark;
+  }
+}
+
+/* data-theme has higher specificity (0,1,1) than :root (0,1,0) — always wins */
+html[data-theme="dark"] {
+  --color-evh-bg: #0b1121;
+  --color-evh-dark: #e8edf5;
+  --color-evh-gray-50: #0f1a2e;
+  --color-evh-gray-100: #14203a;
+  --color-evh-gray-200: #1e3050;
+  --color-evh-gray-300: #334e78;
+  --color-evh-gray-400: #6b8ab5;
+  --color-evh-gray-500: #94aecf;
+  --color-evh-gray-600: #b8cde4;
+  --color-evh-gray-700: #d0dff0;
+  --color-evh-gray-900: #e8edf5;
+}
+
+html[data-theme="dark"] ::selection {
+  background-color: color-mix(in srgb, var(--color-evh-primary) 40%, transparent);
+  color: white;
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-br from-evh-yellow via-amber-300 to-evh-yellow/80 bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-evh-primary via-red-400 to-evh-primary/80 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
   }
 
   .glass {
@@ -48,16 +99,47 @@
     @apply backdrop-blur-xl bg-evh-dark/80 border border-evh-gray-700/50 shadow-lg;
   }
 
+  .dark .glass {
+    @apply bg-slate-900/70 border-slate-700/30;
+  }
+
   .card-shadow {
     @apply shadow-[0_2px_20px_-3px_rgba(0,0,0,0.07),0_1px_4px_-2px_rgba(0,0,0,0.04)];
+  }
+
+  .dark .card-shadow {
+    @apply shadow-[0_2px_20px_-3px_rgba(0,0,0,0.25),0_1px_4px_-2px_rgba(0,0,0,0.15)];
   }
 
   .card-shadow-hover {
     @apply hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.12),0_2px_8px_-4px_rgba(0,0,0,0.06)] transition-shadow duration-500;
   }
 
+  .dark .card-shadow-hover {
+    @apply hover:shadow-[0_8px_40px_-8px_rgba(0,0,0,0.3),0_2px_8px_-4px_rgba(0,0,0,0.2)];
+  }
+
   .premium-gradient {
-    background: linear-gradient(135deg, #FFD100 0%, #FFB800 50%, #FFD100 100%);
+    background: linear-gradient(135deg, #E40000 0%, #FF2A2A 50%, #E40000 100%);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #E40000 0%, #FF2A2A 100%);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 14px rgba(228, 0, 0, 0.35);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(228, 0, 0, 0.45);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(228, 0, 0, 0.3);
   }
 
   .dark-hero-gradient {
@@ -68,8 +150,16 @@
     background: linear-gradient(180deg, #FAFAFA 0%, #ffffff 50%, #FAFAFA 100%);
   }
 
+  .dark .section-gradient {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  }
+
   .floating-gradient {
-    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 209, 0, 0.15), transparent);
+    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(228, 0, 0, 0.12), transparent);
+  }
+
+  .dark .floating-gradient {
+    background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(228, 0, 0, 0.08), transparent);
   }
 
   .magnetic {
