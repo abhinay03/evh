@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -84,6 +84,15 @@ function VideoCard() {
       setIsMuted(true);
       videoRef.current.play().catch(() => {});
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.muted = true;
+      }
+    };
   }, []);
 
   const handleVideoClick = useCallback(() => {
