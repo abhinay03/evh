@@ -61,7 +61,6 @@ function VideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
   const didUnmute = useRef(false);
 
   const toggleMute = useCallback(() => {
@@ -72,7 +71,6 @@ function VideoCard() {
   }, []);
 
   const handlePlaying = useCallback(() => {
-    setIsPlaying(true);
     if (!didUnmute.current && videoRef.current) {
       videoRef.current.muted = false;
       setIsMuted(false);
@@ -88,9 +86,14 @@ function VideoCard() {
     }
   }, []);
 
-  const handlePlayClick = useCallback(() => {
-    if (!videoRef.current) return;
-    videoRef.current.play().catch(() => {});
+  const handleVideoClick = useCallback(() => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
   }, []);
 
   return (
@@ -119,15 +122,7 @@ function VideoCard() {
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
 
-          {!isPlaying && !hasError && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] cursor-pointer" onClick={handlePlayClick}>
-              <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform duration-300 hover:scale-110">
-                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
-          )}
+          <div className="absolute inset-0 cursor-pointer" onClick={handleVideoClick} />
 
           {hasError && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">

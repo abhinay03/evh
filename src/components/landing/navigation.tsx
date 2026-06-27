@@ -7,7 +7,7 @@ import { useLocale } from "@/context/locale-context";
 import { useTheme } from "@/context/theme-context";
 
 const navLinks = [
-  { label: "Produkte", labelEn: "Products", href: "#products" },
+  { label: "Produkte", labelEn: "Products", href: "#district-heating" },
   { label: "Fernwärme", labelEn: "District Heating", href: "#district-heating" },
   { label: "Strom", labelEn: "Electricity", href: "#electricity" },
   { label: "Community", labelEn: "Community", href: "#community" },

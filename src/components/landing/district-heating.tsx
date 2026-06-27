@@ -29,7 +29,7 @@ export function DistrictHeating() {
   const { t } = useLocale();
 
   return (
-    <section id="products" className="relative py-32 md:py-40 bg-[#FAFAFA] dark:bg-slate-950 overflow-hidden">
+    <section id="district-heating" className="relative py-32 md:py-40 bg-[#FAFAFA] dark:bg-slate-950 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <ScrollReveal>
           <p className="text-[#E53935] font-medium text-sm tracking-[0.2em] uppercase mb-4">
