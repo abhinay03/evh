@@ -376,17 +376,17 @@ const easeOut = [0.25, 0.1, 0.25, 1] as const;
 
 export function HeatScanAIContent() {
   const { t } = useLocale();
-  const [flowState, setFlowState] = useState<FlowState>("upload");
-  const [selectedDemoId, setSelectedDemoId] = useState<string | null>(null);
-  const [result, setResult] = useState<HeatScanResult | null>(null);
+  const [flowState, setFlowState] = useState<FlowState>("results");
+  const [selectedDemoId, setSelectedDemoId] = useState<string | null>("demo-3");
+  const [result, setResult] = useState<HeatScanResult | null>(demoSystems[2].result);
   const [analysisStep, setAnalysisStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [showYearInput, setShowYearInput] = useState(false);
-  const [installationYear, setInstallationYear] = useState(2015);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [installationYear, setInstallationYear] = useState(2018);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(demoSystems[2].imageUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
