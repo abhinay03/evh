@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -59,13 +59,40 @@ function CurvedDivider() {
 
 function VideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [canPlay, setCanPlay] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const playCountRef = useRef(0);
 
-  const handleClick = useCallback(() => {
-    if (videoRef.current && videoRef.current.paused) {
-      videoRef.current.play().catch(() => {});
+  useEffect(() => {
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise) {
+        playPromise.then(() => setIsPlaying(true)).catch(() => {});
+      }
     }
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  }, []);
+
+  const handleEnded = useCallback(() => {
+    playCountRef.current += 1;
+    if (playCountRef.current >= 1 && videoRef.current) {
+      videoRef.current.muted = true;
+      setIsMuted(true);
+    }
+    videoRef.current?.play().catch(() => {});
+  }, []);
+
+  const handlePlayClick = useCallback(() => {
+    if (!videoRef.current) return;
+    const p = videoRef.current.play();
+    if (p) p.then(() => setIsPlaying(true)).catch(() => {});
   }, []);
 
   return (
@@ -73,55 +100,46 @@ function VideoCard() {
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: 0.8, duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative w-full max-w-[680px] mx-auto lg:mx-0 animate-float"
+      className="relative w-full max-w-[920px] mx-auto lg:mx-0 animate-float"
     >
-      <div
-        className="relative rounded-[1.75rem] overflow-hidden bg-white/5 backdrop-blur-xl border border-white/12 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]"
-        onClick={handleClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
-        aria-label="Play campaign video"
-      >
+      <div className="relative rounded-[1.75rem] overflow-hidden bg-white/5 backdrop-blur-xl border border-white/12 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]">
         <div className="aspect-video relative overflow-hidden">
           <video
             ref={videoRef}
             className="w-full h-full object-cover"
             poster="/images/evh-bg.png"
-            muted
-            loop
+            muted={isMuted}
+            autoPlay
             playsInline
-            preload="metadata"
-            onCanPlay={() => setCanPlay(true)}
+            preload="auto"
             onError={() => setHasError(true)}
-            controls={false}
+            onEnded={handleEnded}
+            onPlay={() => setIsPlaying(true)}
           >
-            <source src="/videos/campaign.mp4" type="video/mp4" />
+            <source src="/videos/EVH_Campaign_Film_–_Made_in.mp4" type="video/mp4" />
           </video>
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
 
-          <AnimatePresence>
-            {(!canPlay || hasError) && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] cursor-pointer"
-                onClick={handleClick}
-              >
-                <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform duration-300 hover:scale-110">
-                  <svg
-                    className="w-6 h-6 text-white ml-1"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {!isPlaying && !hasError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] cursor-pointer" onClick={handlePlayClick}>
+              <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform duration-300 hover:scale-110">
+                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          )}
+
+          {hasError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
+              <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2.5 px-5 py-3">
@@ -132,6 +150,23 @@ function VideoCard() {
           <span className="text-[11px] text-white/40 font-medium tracking-wider uppercase">
             EVH Campaign 2026
           </span>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); toggleMute(); }}
+            className="ml-2 p-1 rounded-lg hover:bg-white/10 transition-colors"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+          >
+            {isMuted ? (
+              <svg className="w-3.5 h-3.5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              </svg>
+            ) : (
+              <svg className="w-3.5 h-3.5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              </svg>
+            )}
+          </button>
           <span className="ml-auto text-[11px] text-white/25 font-medium">
             0:30
           </span>
@@ -243,35 +278,53 @@ export function Hero() {
                 variants={fadeUp}
                 className="text-[clamp(2.5rem,8vw,5rem)] xl:text-[clamp(3rem,6vw,6rem)] font-display font-bold leading-[1.05] tracking-[-0.03em] text-white"
               >
-                {t("hero.title.line1")} <span className="text-[#E53935]">{t("hero.title.line2")}</span>
+                {t("hero.title.line1")} <span className="text-[#E53935] whitespace-nowrap">{t("hero.title.line2")}</span>
               </motion.h1>
             </div>
 
-            {/* Subline — floating glow */}
+            {/* Subline — single line creative */}
             <motion.p
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.7, ease: easeOut }}
-              className="mt-6 sm:mt-8 flex flex-col gap-1"
+              className="mt-6 sm:mt-8"
             >
-              {[t("hero.subtitle.line1"), t("hero.subtitle.line2"), t("hero.subtitle.line3")].map((line, i) => (
+              <span className="block text-base sm:text-lg md:text-xl leading-relaxed text-white font-medium tracking-wide"
+                style={{ textShadow: "0 0 20px rgba(22,35,58,0.6), 0 0 40px rgba(22,35,58,0.3)" }}
+              >
                 <motion.span
-                  key={line}
-                  animate={{ y: [0, -3, 0] }}
-                  transition={{
-                    delay: 1.2 + i * 0.2,
-                    duration: 3 + i * 0.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="block text-base sm:text-lg md:text-xl leading-relaxed text-white font-medium"
-                  style={{
-                    textShadow: "0 0 20px rgba(22,35,58,0.6), 0 0 40px rgba(22,35,58,0.3), 0 0 60px rgba(229,57,53,0.1)",
-                  }}
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
                 >
-                  {line}
+                  {t("hero.subtitle.line1")}
                 </motion.span>
-              ))}
+                <span className="mx-2 text-white/30">·</span>
+                <motion.span
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.15 }}
+                  className="inline-block"
+                >
+                  {t("hero.subtitle.line2")}
+                </motion.span>
+                <span className="mx-2 text-white/30">·</span>
+                <motion.span
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                  className="inline-block"
+                >
+                  {t("hero.subtitle.line3")}
+                </motion.span>
+              </span>
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+                className="block mt-2 text-sm sm:text-base text-[#E53935]/70 font-medium tracking-wide"
+                style={{ textShadow: "0 0 20px rgba(229,57,53,0.15)" }}
+              >
+                {t("hero.subtitle.sustainability")}
+              </motion.span>
             </motion.p>
 
             {/* Tablet/mobile: Video appears here */}
