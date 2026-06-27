@@ -376,27 +376,26 @@ const easeOut = [0.25, 0.1, 0.25, 1] as const;
 
 export function HeatScanAIContent() {
   const { t } = useLocale();
-  const [flowState, setFlowState] = useState<FlowState>("results");
-  const [selectedDemoId, setSelectedDemoId] = useState<string | null>("demo-3");
-  const [result, setResult] = useState<HeatScanResult | null>(demoSystems[2].result);
+  const [flowState, setFlowState] = useState<FlowState>("upload");
+  const [selectedDemoId, setSelectedDemoId] = useState<string | null>(null);
+  const [result, setResult] = useState<HeatScanResult | null>(null);
   const [analysisStep, setAnalysisStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [dragOver, setDragOver] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [showYearInput, setShowYearInput] = useState(false);
-  const [installationYear, setInstallationYear] = useState(2018);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(demoSystems[2].imageUrl);
+  const [installationYear, setInstallationYear] = useState(2015);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const pendingDemoRef = useRef<string | null>(null);
 
-  const startAnalysis = useCallback((demoId: string, year: number) => {
-    const demo = demoSystems.find((d) => d.id === demoId);
-    if (!demo) return;
-    setSelectedDemoId(demoId);
+  const startAnalysis = useCallback((_demoId: string, year: number) => {
+    const demo = demoSystems[2];
+    setSelectedDemoId("demo-3");
     setShowYearInput(false);
     setFlowState("analyzing");
     setAnalysisStep(0);
@@ -428,7 +427,7 @@ export function HeatScanAIContent() {
   }, []);
 
   const promptYear = useCallback((demoId: string) => {
-    pendingDemoRef.current = demoId;
+    pendingDemoRef.current = "demo-3";
     const demo = demoSystems.find((d) => d.id === demoId);
     if (demo) {
       setInstallationYear(demo.result.installedYear);
@@ -442,9 +441,8 @@ export function HeatScanAIContent() {
     const file = _files[0];
     const url = URL.createObjectURL(file);
     setUploadedImageUrl(url);
-    const randomDemo = demoSystems[Math.floor(Math.random() * demoSystems.length)];
-    pendingDemoRef.current = randomDemo.id;
-    setInstallationYear(randomDemo.result.installedYear);
+    pendingDemoRef.current = "demo-3";
+    setInstallationYear(demoSystems[2].result.installedYear);
     setShowYearInput(true);
   }, []);
 
@@ -486,9 +484,8 @@ export function HeatScanAIContent() {
         const file = new File([blob], "heating-system.jpg", { type: "image/jpeg" });
         const url = URL.createObjectURL(file);
         setUploadedImageUrl(url);
-        const randomDemo = demoSystems[Math.floor(Math.random() * demoSystems.length)];
-        pendingDemoRef.current = randomDemo.id;
-        setInstallationYear(randomDemo.result.installedYear);
+        pendingDemoRef.current = "demo-3";
+        setInstallationYear(demoSystems[2].result.installedYear);
         setShowYearInput(true);
       }
     }, "image/jpeg");
