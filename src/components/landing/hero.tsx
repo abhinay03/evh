@@ -62,10 +62,11 @@ function VideoCard() {
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [canPlay, setCanPlay] = useState(false);
   const playCountRef = useRef(0);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (canPlay && videoRef.current) {
       const playPromise = videoRef.current.play();
       if (playPromise) {
         playPromise.then(() => {
@@ -77,7 +78,7 @@ function VideoCard() {
         }).catch(() => {});
       }
     }
-  }, []);
+  }, [canPlay]);
 
   const toggleMute = useCallback(() => {
     if (videoRef.current) {
@@ -121,6 +122,7 @@ function VideoCard() {
             onError={() => setHasError(true)}
             onEnded={handleEnded}
             onPlay={() => setIsPlaying(true)}
+            onCanPlay={() => setCanPlay(true)}
           >
             <source src="/videos/EVH_Campaign_Film_–_Made_in.mp4" type="video/mp4" />
           </video>
