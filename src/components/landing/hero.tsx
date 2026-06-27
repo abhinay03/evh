@@ -124,7 +124,7 @@ function VideoCard() {
             onPlay={() => setIsPlaying(true)}
             onCanPlay={() => setCanPlay(true)}
           >
-            <source src="/videos/EVH_Campaign_Film_–_Made_in.mp4" type="video/mp4" />
+            <source src="/videos/evh-campaign.mp4" type="video/mp4" />
           </video>
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
