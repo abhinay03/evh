@@ -346,7 +346,7 @@ export function Hero() {
                 <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
               </Link>
               <Link
-                href="/portal/login"
+                href="/portal/dashboard"
                 className="group relative inline-flex items-center gap-2.5 px-7 py-3.5 border border-white/20 text-white text-sm font-semibold rounded-xl overflow-hidden transition-all duration-500 hover:border-white/40 hover:bg-white/5 active:scale-[0.97]"
               >
                 <span className="relative z-10">{t("hero.cta.portal")}</span>

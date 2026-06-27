@@ -49,7 +49,7 @@ export function CtaSection() {
             <ScrollReveal delay={0.2}>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
-                  href="/portal/login"
+                  href="/portal/dashboard"
                   className="group relative inline-flex items-center gap-2.5 px-8 py-4 bg-[#E53935] text-white text-base font-semibold rounded-xl overflow-hidden transition-all duration-500 hover:bg-[#c62828] active:scale-[0.97] shadow-[0_4px_20px_-4px_rgba(229,57,53,0.5)]"
                 >
                   <span className="relative z-10">{t("cta.cta.getStarted")}</span>

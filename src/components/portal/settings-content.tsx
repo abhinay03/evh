@@ -15,7 +15,7 @@ export function SettingsContent() {
 
   const handleLogout = () => {
     logout();
-    router.push("/portal/login");
+    router.push("/");
   };
 
   return (

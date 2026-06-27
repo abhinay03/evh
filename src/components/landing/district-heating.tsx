@@ -122,7 +122,7 @@ export function DistrictHeating() {
 
         <ScrollReveal delay={0.4} className="mt-10 text-center">
           <Link
-            href="/portal/login"
+            href="/portal/dashboard"
             className="group inline-flex items-center gap-2.5 px-8 py-4 bg-[#16233A] text-white text-base font-semibold rounded-2xl hover:bg-[#1e293b] transition-all duration-300 shadow-lg active:scale-[0.98]"
           >
             {t("dh.cta")}

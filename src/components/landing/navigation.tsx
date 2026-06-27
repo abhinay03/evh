@@ -103,7 +103,7 @@ export function Navigation() {
           </button>
 
           <Link
-            href="/portal/login"
+            href="/portal/dashboard"
             className={`hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold rounded-xl transition-all duration-500 active:scale-[0.97] ${
               scrolled
                 ? "bg-[#E53935] text-white hover:bg-[#c62828] shadow-[0_4px_14px_-4px_rgba(229,57,53,0.4)]"
@@ -182,7 +182,7 @@ export function Navigation() {
                   )}
                 </button>
                 <Link
-                  href="/portal/login"
+                  href="/portal/dashboard"
                   onClick={() => setMobileOpen(false)}
                   className="flex-1 text-center px-5 py-2.5 bg-[#E53935] text-white text-xs font-semibold rounded-xl"
                 >

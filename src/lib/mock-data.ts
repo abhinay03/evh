@@ -259,7 +259,7 @@ export const rewards: Reward[] = [
 ];
 
 export const communityEvents: CommunityEvent[] = [
-  { id: "EVT-001", title: "Halle Clean-Up Day", date: "2024-07-15", location: "Stadtpark Halle", type: "volunteer", participants: 234, image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop" },
+  { id: "EVT-001", title: "Halle Clean-Up Day", date: "2024-07-15", location: "Stadtpark Halle", type: "volunteer", participants: 234, image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop" },
   { id: "EVT-002", title: "Energy Workshop: District Heating", date: "2024-07-22", location: "EVH Kundencenter", type: "workshop", participants: 45, image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&h=400&fit=crop" },
   { id: "EVT-003", title: "Tree Planting at Heidesee", date: "2024-08-05", location: "Heidesee", type: "volunteer", participants: 89, image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&h=400&fit=crop" },
   { id: "EVT-004", title: "Halle Night of Energy", date: "2024-08-20", location: "Marktplatz Halle", type: "event", participants: 1200, image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop" },

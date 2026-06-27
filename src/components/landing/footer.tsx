@@ -28,7 +28,7 @@ const columns = [
   {
     titleKey: "footer.connect",
     links: [
-      { labelKey: "nav.customer.portal", href: "/portal/login" },
+      { labelKey: "nav.customer.portal", href: "/portal/dashboard" },
       { labelKey: "footer.contact", href: "#" },
       { labelKey: "footer.emergency", href: "#" },
       { labelKey: "footer.faq", href: "#" },
