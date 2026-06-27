@@ -60,7 +60,7 @@ function CurvedDivider() {
 function VideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const playCountRef = useRef(0);
 
@@ -68,7 +68,13 @@ function VideoCard() {
     if (videoRef.current) {
       const playPromise = videoRef.current.play();
       if (playPromise) {
-        playPromise.then(() => setIsPlaying(true)).catch(() => {});
+        playPromise.then(() => {
+          setIsPlaying(true);
+          if (videoRef.current) {
+            videoRef.current.muted = false;
+            setIsMuted(false);
+          }
+        }).catch(() => {});
       }
     }
   }, []);
