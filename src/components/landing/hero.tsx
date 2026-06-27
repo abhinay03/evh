@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import {
   motion,
   useScroll,
@@ -62,23 +62,7 @@ function VideoCard() {
   const [hasError, setHasError] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [canPlay, setCanPlay] = useState(false);
-  const playCountRef = useRef(0);
-
-  useEffect(() => {
-    if (canPlay && videoRef.current) {
-      const playPromise = videoRef.current.play();
-      if (playPromise) {
-        playPromise.then(() => {
-          setIsPlaying(true);
-          if (videoRef.current) {
-            videoRef.current.muted = false;
-            setIsMuted(false);
-          }
-        }).catch(() => {});
-      }
-    }
-  }, [canPlay]);
+  const didUnmute = useRef(false);
 
   const toggleMute = useCallback(() => {
     if (videoRef.current) {
@@ -87,19 +71,26 @@ function VideoCard() {
     }
   }, []);
 
+  const handlePlaying = useCallback(() => {
+    setIsPlaying(true);
+    if (!didUnmute.current && videoRef.current) {
+      videoRef.current.muted = false;
+      setIsMuted(false);
+      didUnmute.current = true;
+    }
+  }, []);
+
   const handleEnded = useCallback(() => {
-    playCountRef.current += 1;
-    if (playCountRef.current >= 1 && videoRef.current) {
+    if (videoRef.current) {
       videoRef.current.muted = true;
       setIsMuted(true);
+      videoRef.current.play().catch(() => {});
     }
-    videoRef.current?.play().catch(() => {});
   }, []);
 
   const handlePlayClick = useCallback(() => {
     if (!videoRef.current) return;
-    const p = videoRef.current.play();
-    if (p) p.then(() => setIsPlaying(true)).catch(() => {});
+    videoRef.current.play().catch(() => {});
   }, []);
 
   return (
@@ -121,8 +112,7 @@ function VideoCard() {
             preload="auto"
             onError={() => setHasError(true)}
             onEnded={handleEnded}
-            onPlay={() => setIsPlaying(true)}
-            onCanPlay={() => setCanPlay(true)}
+            onPlaying={handlePlaying}
           >
             <source src="/videos/evh-campaign.mp4" type="video/mp4" />
           </video>
